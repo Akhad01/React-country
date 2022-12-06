@@ -50,11 +50,15 @@ export const Header = () => {
     dispatch(setTheme(next));
   };
 
+  const clearUp = () => {
+    dispatch(clearControls());
+  };
+
   return (
     <HeaderEl>
       <Container>
         <Wrapper>
-          <Title onClick={dispatch(clearControls())}>Where is the world?</Title>
+          <Title onClick={clearUp}>Where is the world?</Title>
           <ModeSwitcher onClick={handleChange}>
             {theme === "light" ? (
               <IoMoonOutline size="14px" />

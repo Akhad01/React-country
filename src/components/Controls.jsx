@@ -31,7 +31,6 @@ export const Controls = () => {
   const dispatch = useDispatch();
   const region = useSelector(selectRegion);
 
-  console.log(region);
   return (
     <Wrapper>
       <Search />
