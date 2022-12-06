@@ -1,4 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+
+import { selectNeighbours } from "../store/details/details-selectors";
+import { loadNeighboursСountriesByName } from "../store/details/details-actions";
 
 const Wrapper = styled.section`
   margin-top: 3rem;
@@ -102,6 +107,15 @@ export const Info = (props) => {
     push,
   } = props;
 
+  const dispatch = useDispatch();
+  const neighbours = useSelector(selectNeighbours);
+
+  useEffect(() => {
+    if (borders.length) {
+      dispatch(loadNeighboursСountriesByName(borders));
+    }
+  }, [dispatch, borders]);
+
   return (
     <Wrapper>
       <InfoImage src={flag} alt={name} />
@@ -128,19 +142,19 @@ export const Info = (props) => {
           </List>
           <List>
             <ListItem>
-              <b>Top Level Domain</b>{' '}
+              <b>Top Level Domain</b>{" "}
               {topLevelDomain.map((d) => (
                 <span key={d}>{d}</span>
               ))}
             </ListItem>
             <ListItem>
-              <b>Currency</b>{' '}
+              <b>Currency</b>{" "}
               {currencies.map((c) => (
                 <span key={c.code}>{c.name} </span>
               ))}
             </ListItem>
             <ListItem>
-              <b>Top Level Domain</b>{' '}
+              <b>Top Level Domain</b>{" "}
               {languages.map((l) => (
                 <span key={l.name}>{l.name}</span>
               ))}
@@ -153,7 +167,7 @@ export const Info = (props) => {
             <span>There is no border countries</span>
           ) : (
             <TagGroup>
-              {[].map((b) => (
+              {neighbours.map((b) => (
                 <Tag key={b} onClick={() => push(`/country/${b}`)}>
                   {b}
                 </Tag>
