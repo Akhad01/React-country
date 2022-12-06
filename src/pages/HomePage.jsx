@@ -5,15 +5,19 @@ import { useEffect } from "react";
 import { List } from "../components/List";
 import { Card } from "../components/Card";
 import { Controls } from "../components/Controls";
-import { selectCountries } from "../store/countries/countries-selects";
-import { selectAllCountries } from "../store/countries/countries-selects";
 import { loadСountries } from "../store/countries/countries-action";
+import { selectCountries } from "../store/countries/countries-selects";
+import { selectVisibleCountries } from "../store/countries/countries-selects";
+import { selectControls } from "../store/controls/controls-selects";
 
 export const HomePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { list, status, error } = useSelector(selectCountries);
-  const countries = useSelector(selectAllCountries);
+  const { search, region } = useSelector(selectControls);
+  const { list, error, status } = useSelector(selectCountries);
+  const countries = useSelector((state) =>
+    selectVisibleCountries(state, { search, region })
+  );
 
   useEffect(() => {
     if (!list) {

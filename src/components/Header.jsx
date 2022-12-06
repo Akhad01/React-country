@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Container } from "./Container";
 import { setTheme } from "../store/theme/theme-actions";
+import { clearControls } from "../store/controls/controls-actions";
 
 const HeaderEl = styled.header`
   box-shadow: var(--shadow);
@@ -53,7 +54,7 @@ export const Header = () => {
     <HeaderEl>
       <Container>
         <Wrapper>
-          <Title>Where is the world?</Title>
+          <Title onClick={dispatch(clearControls())}>Where is the world?</Title>
           <ModeSwitcher onClick={handleChange}>
             {theme === "light" ? (
               <IoMoonOutline size="14px" />
