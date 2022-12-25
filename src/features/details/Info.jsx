@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import { selectNeighbours } from "../store/details/details-selectors";
-import { loadNeighboursСountriesByName } from "../store/details/details-actions";
+import { selectNeighbours } from "./details-slice";
+import { loadNeighboursСountriesByName } from "./details-slice";
 
 const Wrapper = styled.section`
   margin-top: 3rem;
@@ -115,6 +115,8 @@ export const Info = (props) => {
       dispatch(loadNeighboursСountriesByName(borders));
     }
   }, [dispatch, borders]);
+
+  console.log("12", topLevelDomain);
 
   return (
     <Wrapper>

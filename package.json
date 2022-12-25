@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
     "axios": "^0.22.0",
     "lodash.throttle": "^4.1.1",
     "react": "^17.0.2",
