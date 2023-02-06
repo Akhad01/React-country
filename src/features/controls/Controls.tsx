@@ -1,11 +1,16 @@
 import styled from "styled-components";
 
 import { Search } from "./Search";
-import { CustomSelect } from "./CustomSelect";
 import { setRegion } from "./controls-slice";
 import { useRegion } from "./use-region";
+import { Region } from "types/region";
+import { CustomSelect } from "./CustomSelect";
 
-const optionsMap = {
+type RegionOption = {
+  [RegKey in Region]: { value: RegKey, label: RegKey }
+}
+
+const optionsMap: RegionOption = {
   Africa: { value: "Africa", label: "Africa" },
   America: { value: "America", label: "America" },
   Asia: { value: "Asia", label: "Asia" },
@@ -27,7 +32,7 @@ const Wrapper = styled.div`
 `;
 
 export const Controls = () => {
-  const [dispatch, region] = useRegion();
+  const [handleRegion, region] = useRegion();
 
   return (
     <Wrapper>
@@ -37,8 +42,8 @@ export const Controls = () => {
         placeholder="Filter by Region"
         isClearable
         isSearchable={false}
-        value={region}
-        onChange={(e) => dispatch(setRegion(e.value))}
+        value={region ? optionsMap[region] : ""}
+        onChange={handleRegion}
       />
     </Wrapper>
   );

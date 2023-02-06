@@ -1,20 +1,35 @@
+import { Extra } from "types/extra";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Country } from "types/countries";
+import { Status } from "types/status";
 
-export const loadСountriesByName = createAsyncThunk(
-  "@@details/load-country-by-name",
-  (name, { extra: { client, api } }) => {
-    return client.get(api.searchByCountry(name));
-  }
-);
+export const loadСountriesByName = createAsyncThunk<
+  { data: Country[] },
+  string,
+  { extra: Extra }
+>("@@details/load-country-by-name", (name, { extra: { client, api } }) => {
+  return client.get(api.searchByCountry(name));
+});
 
-export const loadNeighboursСountriesByName = createAsyncThunk(
+export const loadNeighboursСountriesByName = createAsyncThunk<
+  { data: Country[] },
+  string[],
+  { extra: Extra }
+>(
   "@@details/load-neighbours-countries-by-name",
   (neighbours, { extra: { client, api } }) => {
     return client.get(api.filterByCode(neighbours));
   }
 );
 
-const initialState = {
+type DetailsSlice = {
+  status: Status;
+  error: string | null;
+  currentCountry: Country | null;
+  neighbours: string[];
+};
+
+const initialState: DetailsSlice = {
   status: "idle",
   error: null,
   currentCountry: null,
@@ -29,13 +44,13 @@ const detailsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadСountriesByName.pending, (state, actions) => {
+      .addCase(loadСountriesByName.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(loadСountriesByName.rejected, (state, actions) => {
         state.status = "rejected";
-        state.error = actions.payload;
+        state.error = "Can not load data";
       })
       .addCase(loadСountriesByName.fulfilled, (state, actions) => {
         state.status = "received";
@@ -43,7 +58,6 @@ const detailsSlice = createSlice({
       })
       .addCase(loadNeighboursСountriesByName.fulfilled, (state, actions) => {
         state.neighbours = actions.payload.data.map((item) => {
-          console.log(item);
           return item.name;
         });
       });
@@ -52,6 +66,3 @@ const detailsSlice = createSlice({
 
 export const detailsReducer = detailsSlice.reducer;
 export const { clearDetails } = detailsSlice.actions;
-
-export const selectDetails = (state) => state.details;
-export const selectNeighbours = (state) => state.details.neighbours;

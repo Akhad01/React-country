@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { NavigateFunction } from "react-router-dom";
 
-import { selectNeighbours } from "./details-slice";
-import { loadNeighboursСountriesByName } from "./details-slice";
+import { Country } from "types/countries";
+import { useNeighbours } from "./use-neighbours";
 
 const Wrapper = styled.section`
   margin-top: 3rem;
@@ -91,7 +90,11 @@ const Tag = styled.span`
   cursor: pointer;
 `;
 
-export const Info = (props) => {
+interface InfoProp extends Country {
+  push: NavigateFunction;
+}
+
+export const Info = (props: InfoProp) => {
   const {
     name,
     nativeName,
@@ -107,16 +110,7 @@ export const Info = (props) => {
     push,
   } = props;
 
-  const dispatch = useDispatch();
-  const neighbours = useSelector(selectNeighbours);
-
-  useEffect(() => {
-    if (borders.length) {
-      dispatch(loadNeighboursСountriesByName(borders));
-    }
-  }, [dispatch, borders]);
-
-  console.log("12", topLevelDomain);
+  const neighbours = useNeighbours(borders)
 
   return (
     <Wrapper>
